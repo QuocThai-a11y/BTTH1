@@ -1,0 +1,82 @@
+#include <iostream>
+
+using namespace std;
+
+// Định nghĩa cấu trúc phân số
+struct PhanSo {
+    int tu;
+    int mau;
+};
+
+void nhapPhanSo(PhanSo &ps, string ten) {
+    cout << "Nhap " << ten << ":" << endl;
+    cout << "  Tu so: ";
+    cin >> ps.tu;
+    do {
+        cout << "  Mau so (khac 0): ";
+        cin >> ps.mau;
+        if (ps.mau == 0) {
+            cout << "Mau so phai khac 0. Vui long nhap lai!" << endl;
+        }
+    } while (ps.mau == 0);
+}
+
+// Hàm xuất phân số 
+void xuatPhanSo(PhanSo ps) {
+    if (ps.mau == 1) {
+        cout << ps.tu;
+    } else {
+        // Xử lý dấu trừ ở mẫu số đưa lên tử số
+        if (ps.mau < 0) {
+            ps.tu = -ps.tu;
+            ps.mau = -ps.mau;
+        }
+        cout << ps.tu << "/" << ps.mau;
+    }
+}
+
+// Hàm so sánh hai phân số bằng phương pháp nhân chéo
+// 0 nếu bằng nhau
+int soSanh(PhanSo ps1, PhanSo ps2) {
+    // a/b so sánh với c/d bằng cách so sánh a*d và c*b
+
+    long long val1 = (long long)ps1.tu * ps2.mau;
+    long long val2 = (long long)ps2.tu * ps1.mau;
+    
+    // Nếu tích hai mẫu số dương, giữ nguyên chiều so sánh
+    if (ps1.mau * ps2.mau > 0) {
+        if (val1 > val2) return 1; // Trả về 1 nếu ps1 > ps2
+        if (val1 < val2) return -1; //-1 nếu ps1 < ps2
+    } else { // Nếu tích hai mẫu số âm, đảo chiều so sánh
+        if (val1 < val2) return 1;
+        if (val1 > val2) return -1;
+    }
+    return 0;
+}
+
+int main() {
+    PhanSo ps1, ps2;
+
+    // Nhập dữ liệu
+    nhapPhanSo(ps1, "phan so thu nhat");
+    nhapPhanSo(ps2, "phan so thu hai");
+
+    // Xuất dữ liệu đã nhập
+    cout << "\nPhan so 1: "; xuatPhanSo(ps1);
+    cout << "\nPhan so 2: "; xuatPhanSo(ps2);
+    cout << endl;
+
+    // So sánh và tìm phân số lớn nhất
+    int result = soSanh(ps1, ps2);
+
+    if (result >= 0) {
+        cout << "\nPhan so lon nhat la: ";
+        xuatPhanSo(ps1);
+    } else {
+        cout << "\nPhan so lon nhat la: ";
+        xuatPhanSo(ps2);
+    }
+    cout << endl;
+
+    return 0;
+}
