@@ -1,0 +1,116 @@
+#include <iostream>
+#include <cmath>                      // Dùng abs()
+using namespace std;
+struct Phanso{
+    int tu;
+    int mau;
+};
+void NhapPhanso(Phanso &ps , string ten){              // Nhập phân số và mẫu số
+    cout << ten << endl ;
+    cout <<" Nhap tu so: ";
+    cin>> ps.tu;
+    do{
+        cout << " Nhap mau so ( khac 0 ): ";
+        cin>> ps.mau;
+        if( ps.mau ==0 ) {
+        cout <<" Nhap lai mau so( khac 0 )!!: " ;         // mẫu số khác 0
+        cin >> ps.mau ;
+        }
+    } while( ps.mau == 0);
+}
+void XuatPhanso( Phanso &ps){            //Xuất phân số 
+    if(ps.tu== 0) cout <<"0" ;
+    
+    else if(ps.mau == 1) cout << ps.tu ;
+    
+    else if( ps.mau == -1) cout << -ps.tu;
+    
+    cout<< ps.tu << "/" << ps.mau ;
+}
+int TimUocChung(int a , int b ){           // Tính ước chung lớn nhất 
+    a = abs(a) ;
+    b = abs(b) ;
+    while( b!=0){
+        int temp = a%b ;
+        a= b ;
+        b = temp ;
+    }
+    return a ;
+}
+int TimBoiChung( int a , int b ){           // Tính bội chung lớn nhất 
+    int UCLN = TimUocChung( a ,  b) ;
+    if( a== 0 || b == 0) return 0 ;         // nếu a hoặc b bằng 0 thì BCLN = 0 
+    return abs( a * b )/UCLN ;              // lấy hai tích số nguyên chia UCLN ra được BCLN  
+}
+void rutgon(Phanso &ps){                    // Tối giản phân số 
+    int ucln = TimUocChung( ps.tu , ps.mau) ;
+    ps.tu /= ucln ;
+    ps.mau /= ucln ;
+  if(ps.mau < 0){                           // Đưa dấu âm từ mẫu lên tử 
+        ps.tu = -ps.tu;
+        ps.mau = -ps.mau;
+    }
+}
+void TinhTong(Phanso &ps1 , Phanso &ps2 , Phanso &Ketqua){      // Tính tỏng hai phân số 
+    int BCLN = TimBoiChung(ps1.mau , ps2.mau ) ;
+    Ketqua.mau = BCLN ;                                         // Mẫu chính là BCLN 
+    Ketqua.tu =( ps1.tu*(BCLN/ps1.mau) ) + ( ps2.tu*(BCLN/ps2.mau) );         // Tìm tử bằng cách nhân với thương BCLN và mẫu rồi cộng lại 
+    rutgon(Ketqua) ;
+}
+void TinhHieu(Phanso &ps1 , Phanso &ps2 , Phanso &Ketqua){      // Tính hiệu hai phân số
+    int BCLN = TimBoiChung(ps1.mau , ps2.mau ) ;
+    Ketqua.mau = BCLN ;                                           // Mẫu chính là BCLN 
+    Ketqua.tu =( ps1.tu*(BCLN/ps1.mau) ) - ( ps2.tu*(BCLN/ps2.mau) );               // Tìm tử bằng cách nhân với thương BCLN và mẫu rồi trừ lại
+    rutgon(Ketqua) ;                                            // Tối giản kết quả cuối cùng
+}
+void TimTich(Phanso &ps1 , Phanso &ps2 , Phanso &Ketqua){       // Tích hai phân số
+    Ketqua.tu = ps1.tu*ps2.tu ;                                  // tử nhân tử
+    Ketqua.mau = ps1.mau*ps2.mau;                                 // mẫu nhân mẫu
+    rutgon(Ketqua) ;                                         // Tối giản kết quả cuối cùng
+}
+void TimThuong(Phanso &ps1 , Phanso &ps2 , Phanso &Ketqua){            // Tìm thương hai phân số
+    Ketqua.tu = ps1.tu*ps2.mau ;                                       // nhân nghịch đảo phân số 
+    Ketqua.mau = ps2.tu*ps1.mau ;
+    rutgon(Ketqua) ;                                                 // Tối giản kết quả cuối cùng
+}
+int main(){
+    Phanso ps1 , ps2 , Ketqua ;
+    
+    NhapPhanso(ps1 ," Phan so thu nhat:") ;
+    
+    NhapPhanso(ps2, " Phan so thu hai: ") ;
+    
+    cout<< " Phan so thu nhat: "; 
+    
+    XuatPhanso(ps1) ; cout << endl ;
+    
+    cout<<" Phan so thu hai: " ; 
+    
+    XuatPhanso(ps2) ; cout << endl ;
+    
+    TinhTong( ps1 , ps2 , Ketqua);
+    
+    cout << " Tong cua hai phan so la: " ;
+    
+    XuatPhanso(Ketqua) ; cout << endl ;
+    
+    TinhHieu( ps1 , ps2 , Ketqua);
+    
+     cout << " Hieu cua hai phan so la: " ;
+     
+    XuatPhanso(Ketqua) ; cout << endl ;
+    
+    TimTich( ps1, ps2 , Ketqua) ;
+    
+    cout << " Tich cua hai phan so la: " ;
+    
+    XuatPhanso( Ketqua ); cout << endl ;
+    
+    TimThuong( ps1 , ps2 , Ketqua) ;
+    
+    cout << " Thuong cua hai phan so la: " ;
+    
+    XuatPhanso( Ketqua ) ; cout << endl ;
+    
+    return 0 ;
+}
