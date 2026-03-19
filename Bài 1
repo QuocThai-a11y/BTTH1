@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cmath> // dùng abs()
+using namespace std;
+
+struct Phanso {
+    int tu; // tử số
+    int mau; // mẫu số
+};
+
+void nhapphanso(Phanso &ps) {
+    cout << "Nhap tu so: ";
+    cin >> ps.tu;
+    do {
+        cout << "Nhap mau so (khac 0): ";
+        cin >> ps.mau;
+        if (ps.mau == 0) {
+            cout << "Mau so phai khac 0. Vui long nhap lai!" << endl;
+        }
+    } while (ps.mau == 0);
+}
+
+int TimUCLN(int a, int b) {
+    a = abs(a);        // đưa tử số về dương
+    b = abs(b);        // đưa mẫu số về dương
+    while (b != 0) {  // tìm ước chung
+        int temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+
+void rutgon(Phanso &ps) {
+    int ucln = TimUCLN(ps.tu, ps.mau);
+    ps.tu /= ucln;
+    ps.mau /= ucln;
+    
+    if (ps.mau < 0) {     // đưa dấu âm lên tử số nếu mẫu số âm
+        ps.tu = -ps.tu;
+        ps.mau = -ps.mau;
+    }
+}
+
+void xuatphanso(Phanso ps) {
+    if (ps.mau == 1) {     // xuất tử số nếu mẫu số bằng 1
+        cout << ps.tu << endl;
+    } else {
+        cout << ps.tu << "/" << ps.mau << endl;
+    }
+}
+
+int main() {
+    Phanso pso; 
+    nhapphanso(pso); 
+    
+    cout << "Phan so vua nhap: ";
+    xuatphanso(pso); 
+    
+    rutgon(pso); 
+    cout << "Phan so sau khi rut gon: ";
+    xuatphanso(pso); 
+    return 0;
+}
