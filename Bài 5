@@ -1,0 +1,51 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+class HocSinh{             // Tạo một clas học sinh
+private: 
+    string Hoten ;
+    float DiemToan;
+    float DiemVan;
+    float DiemTB;
+public:
+    void Nhap();
+    void Xuat();
+    float TinhDiemTrungBinh();
+};
+void HocSinh::Nhap(){             // Nhập thông tin học sinh 
+    cout<< "Nhap ho va ten hoc sinh: ";
+    cin.ignore();
+    getline(cin , Hoten);
+    do{
+        cout<< " Nhap diem toan: ";
+        cin>> DiemToan ;
+        if( DiemToan < 0 || DiemToan > 10 ){             // nếu điểm số < 0 hoặc > 10 thì bắt nhập lại
+            cout <<" Diem nam trong 0-10 Nhap lai diem Toan:  ";
+        } 
+    }while(DiemToan < 0 || DiemToan > 10);
+    do{
+        cout<< " Nhap diem van: ";
+        cin>> DiemVan ;
+        if( DiemVan < 0 || DiemVan > 10 ){                // nếu điểm số < 0 hoặc > 10 thì bắt nhập lại 
+            cout <<" Diem nam trong 0-10 Nhap lai diem Toan:  ";
+        } 
+    }while(DiemVan < 0 || DiemVan > 10);
+}
+float HocSinh::TinhDiemTrungBinh(){
+    return (DiemToan + DiemVan) / 2 ;
+
+}
+void HocSinh::Xuat(){
+    float DiemTB = TinhDiemTrungBinh();
+    cout<< " Ho va ten: "<< Hoten<<endl;
+    cout<< " Diem trung binh: ";
+    cout << fixed << setprecision(2) << DiemTB ;
+}
+int main()
+{
+    HocSinh hs;
+    hs.Nhap();
+    hs.Xuat();
+    return 0;
+}
