@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+struct Time{
+    int day , month , year ;
+} ;
+
+bool NamNhuan(int y){                  // Tìm năm thuận 
+    return ( y % 400 ==0 || y%4==0 && y%100!=0);
+}
+int NgayvaThang(int m , int y ){           // tìm số ngày theo tháng 
+    switch( m ){
+        case 4: case 6: case 9: case 11:
+        return 30 ;
+        case 2:
+        return NamNhuan(y) ? 29 : 28;
+        default: return 31;
+    }
+}
+int ngayKetiep(int d ,int m , int y ){     // tính ngày kế tiếp
+    if( d < NgayvaThang( m , y )) d++ ;  
+    else if( d > NgayvaThang( m , y )){
+        d =1 ;
+        if(m < 12) m++ ;                  // nếu ngày lớn số ngày trong tháng thì sang tháng kế tiếp và ngày bằng 1 
+        else{
+            m = 1 ;                     // sang tháng 1 thì số năm sẽ tăng thêm 1 năm
+            y++ ;
+         }
+    }
+    return d ;
+}
+bool KiemtraNgayThangNam( Time a ){               // kiểm tra ngày tháng năm có hợp lệ không
+    if( a.year < 0 || a.month > 12 || a.month < 1 ) return false ;
+    if( a.day < 1 || a.day > NgayvaThang(a.month , a.year) ) return false ;
+    return true ;
+}
+int main()
+{
+    Time dau;
+    cout<< "Nhap ngay thang nam: ";
+    cin>> dau.day >> dau.month >> dau.year ;
+    if(!KiemtraNgayThangNam(dau)){
+        cout<< "Ngay Thang Nam khong hop le " << endl ; 
+    }
+    else {
+        int Ngay = ngayKetiep(dau.day, dau.month, dau.year);
+        cout << "Ngay ke tiep la: "<< Ngay << endl;
+    }
+
+    return 0;
+}
